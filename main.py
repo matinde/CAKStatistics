@@ -38,15 +38,18 @@ if tab == "Mobile Subscriptions":
     st.title("Mobile Subscriptions by Operator in quarterly basis")
     st.write("The data here views the subscrition by operator in quarterly basis from 2017 to 2022.")
 
-    operators_df = df[['Unnamed: 0', 'Safaricom SIM Subscription - Prepaid', 
-                                     'Safaricom SIM Subscription - Postpaid',
-                                     'Airtel Kenya SIM Subscription - Prepaid',
-                                     'Airtel Kenya SIM Subscription - Postpaid',
-                                     'Telkom Kenya SIM Subscription - Prepaid',
-                                     'Telkom Kenya SIM Subscription - Postpaid',
-                                     'Equitel SIM Subscription - Prepaid',
-                                     'Equitel SIM Subscription - Postpaid',
-                                        ]]
+    operators_df = df[[
+                        'Unnamed: 0', 
+                        'QUARTER',
+                        'Safaricom SIM Subscription - Prepaid', 
+                        'Safaricom SIM Subscription - Postpaid',
+                        'Airtel Kenya SIM Subscription - Prepaid',
+                        'Airtel Kenya SIM Subscription - Postpaid',
+                        'Telkom Kenya SIM Subscription - Prepaid',
+                        'Telkom Kenya SIM Subscription - Postpaid',
+                        'Equitel SIM Subscription - Prepaid',
+                        'Equitel SIM Subscription - Postpaid',
+                    ]]
 
 
     period = st.selectbox("Select a period", operators_df['Unnamed: 0'].unique())
@@ -59,7 +62,6 @@ if tab == "Mobile Subscriptions":
     if operators_df_new.empty:
         st.error("No data found for the selected period.")
     else:
-        operators_df_new['QUARTER'] = period[-4:]
         operators_df_new = operators_df_new.T
         col_name = ['Subscriptions']*operators_df_new.shape[1]
         col_name = col_name[:operators_df_new.shape[1]]
@@ -89,7 +91,7 @@ if tab == "Mobile Subscriptions":
             st.write(operators_df_new)
 
     with col2:
-        fig = px.pie(operators_df_new, values=operators_df_new.iloc[:, 0], names=operators_df_new.index)
+        fig = px.pie(operators_df_new, values=operators_df_new.iloc[:, 0], names=operators_df_new.index, hole=.3)
         st.plotly_chart(fig)
 
     #
